@@ -1,5 +1,6 @@
 /* third party */
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const MovieList = () => {
 	const [movies, setMovies] = useState([]);
@@ -23,9 +24,9 @@ const MovieList = () => {
 								With supporting text below as a natural lead-in to additional
 								content.
 							</p>
-							<a href='#' className='btn btn-primary'>
-								Go somewhere
-							</a>
+							<Link to={`/movies/${movie.id}`} className='btn btn-primary'>
+								Read more
+							</Link>
 						</div>
 					</div>
 				</div>

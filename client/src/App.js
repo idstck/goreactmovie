@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Home from './pages/Home';
 import Movies from './pages/Movies';
+import ShowMovie from './pages/Movies/Show';
 import Genres from './pages/Genres';
 import Admin from './pages/Admin';
 
@@ -26,6 +27,7 @@ function App() {
 					<div className='col-sm-10'>
 						<Routes>
 							<Route path='/' element={<Home />} />
+							<Route exact path='/movies/:id' element={<ShowMovie />} />
 							<Route path='/movies' element={<Movies />} />
 							<Route path='/genres' element={<Genres />} />
 							<Route path='/admin' element={<Admin />} />
