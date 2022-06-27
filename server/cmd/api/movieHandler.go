@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"net/http"
 	"server/models"
 	"strconv"
@@ -15,7 +14,9 @@ func (app *application) getOneMovie(rw http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(params.ByName("id"))
 	if err != nil {
-		app.logger.Print(errors.New("invalid id parameter"))
+		// app.logger.Print(errors.New("invalid id parameter"))
+		app.errorJSON(rw, err)
+		return
 	}
 
 	// app.logger.Println("the id is: ", id)
