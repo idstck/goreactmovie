@@ -2,9 +2,7 @@ package main
 
 import (
 	"net/http"
-	"server/models"
 	"strconv"
-	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -21,18 +19,7 @@ func (app *application) getOneMovie(rw http.ResponseWriter, r *http.Request) {
 
 	// app.logger.Println("the id is: ", id)
 
-	movie := models.Movie{
-		ID:          id,
-		Title:       "some movie title",
-		Description: "some description movie",
-		Year:        2022,
-		ReleaseDate: time.Date(1990, 01, 01, 01, 0, 0, 0, time.Local),
-		Runtime:     112,
-		Rating:      5,
-		MPAARating:  "PG-13",
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
-	}
+	movie, err := app.models.DB.Get(id)
 
 	err = app.writeJSON(rw, http.StatusOK, movie, "movie")
 }
