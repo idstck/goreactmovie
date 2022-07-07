@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const ShowMovie = () => {
 	let { id } = useParams();
@@ -50,7 +50,15 @@ const ShowMovie = () => {
 						<small>Rating: {movie.mpaa_rating}</small>
 					</div>
 					<div className='float-end'>
-						<span className='badge bg-secondary me-1'>Action</span>
+						{Object.entries(movie.genres).map((genre, index) => (
+							<Link
+								className='badge bg-secondary me-1'
+								to={`/genres/${genre[0]}`}
+								key={index}
+							>
+								{genre[1]}
+							</Link>
+						))}
 					</div>
 					<div className='clearfix'></div>
 					<hr />
