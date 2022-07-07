@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import MovieDetail from '../../components/movies/MovieDetail';
 
 const ShowMovie = () => {
 	let { id } = useParams();
@@ -40,46 +41,7 @@ const ShowMovie = () => {
 					}
 				})()
 			) : (
-				<>
-					<pre>{JSON.stringify(movie)}</pre>
-					<h2>
-						Movie: {movie.title} ({movie.year}){' '}
-					</h2>
-
-					<div className='float-start'>
-						<small>Rating: {movie.mpaa_rating}</small>
-					</div>
-					<div className='float-end'>
-						{Object.entries(movie.genres).map((genre, index) => (
-							<Link
-								className='badge bg-secondary me-1'
-								to={`/genres/${genre[0]}`}
-								key={index}
-							>
-								{genre[1]}
-							</Link>
-						))}
-					</div>
-					<div className='clearfix'></div>
-					<hr />
-					<table className='table table-dark table-striped table-sm-mt-4'>
-						<thead></thead>
-						<tbody>
-							<tr>
-								<td>Title: </td>
-								<td>{movie.title}</td>
-							</tr>
-							<tr>
-								<td>Description:</td>
-								<td>{movie.description}</td>
-							</tr>
-							<tr>
-								<td>Runtime:</td>
-								<td>{movie.runtime} Minute(s)</td>
-							</tr>
-						</tbody>
-					</table>
-				</>
+				<MovieDetail movie={movie} />
 			)}
 		</>
 	);
