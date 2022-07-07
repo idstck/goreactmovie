@@ -6,12 +6,17 @@ import axios from 'axios';
 const MovieList = () => {
 	const [movies, setMovies] = useState([]);
 	const [loaded, setLoaded] = useState(false);
+	const [errorMessage, setErrorMessage] = useState(null);
 
 	useEffect(() => {
 		const fetchMovies = async () => {
-			const result = await axios(`http://localhost:4000/movies`);
-			await setMovies(result.data.movies);
-			setLoaded(true);
+			try {
+				const result = await axios(`http://localhost:4000/movies`);
+				await setMovies(result.data.movies);
+				setLoaded(true);
+			} catch (err) {
+				setErrorMessage(err.response.data);
+			}
 		};
 		fetchMovies();
 	}, []);
@@ -19,9 +24,21 @@ const MovieList = () => {
 	return (
 		<>
 			{!loaded ? (
-				<div className='row'>
-					<p>Loading...</p>
-				</div>
+				(() => {
+					if (errorMessage) {
+						return (
+							<div className='row'>
+								<p>Oops... {errorMessage}</p>
+							</div>
+						);
+					} else {
+						return (
+							<div className='row'>
+								<p>Loading...</p>
+							</div>
+						);
+					}
+				})()
 			) : (
 				<div className='row'>
 					{movies.map((movie, index) => (
