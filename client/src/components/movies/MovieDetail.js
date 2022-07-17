@@ -15,7 +15,7 @@ const MovieDetail = ({ movie }) => {
 				{Object.entries(movie.genres).map((genre, index) => (
 					<Link
 						className='badge bg-secondary me-1'
-						to={`/genres/${genre[0]}`}
+						to={`/genres/${genre[0]}/movies`}
 						key={index}
 					>
 						{genre[1]}

@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Movies from './pages/Movies';
 import ShowMovie from './pages/Movies/Show';
 import Genres from './pages/Genres';
+import ShowMoviesGenre from './pages/Genres/Show';
 import Admin from './pages/Admin';
 
 /* style */
@@ -29,6 +30,11 @@ function App() {
 							<Route path='/' element={<Home />} />
 							<Route exact path='/movies/:id' element={<ShowMovie />} />
 							<Route path='/movies' element={<Movies />} />
+							<Route
+								exact
+								path='/genres/:id/movies'
+								element={<ShowMoviesGenre />}
+							/>
 							<Route path='/genres' element={<Genres />} />
 							<Route path='/admin' element={<Admin />} />
 						</Routes>
