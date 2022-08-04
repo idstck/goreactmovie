@@ -1,9 +1,8 @@
-import React from 'react'
+import React from 'react';
+import MovieTable from '../../components/movies/MovieTable';
 
 const index = () => {
-  return (
-    <div>Admin</div>
-  )
-}
+	return <MovieTable />;
+};
 
-export default index
+export default index;
