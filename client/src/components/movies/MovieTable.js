@@ -43,7 +43,12 @@ const MovieTable = () => {
 				<>
 					<div className='row'>
 						<div className='col-12'>
-							<button className='btn btn-sm btn-primary'>Add</button>
+							<Link
+								to={'/admin/movies/create'}
+								className='btn btn-sm btn-primary'
+							>
+								Add
+							</Link>
 						</div>
 					</div>
 					<div className='row'>

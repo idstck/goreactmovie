@@ -12,6 +12,7 @@ import Admin from './pages/Admin';
 
 /* style */
 import './App.css';
+import MovieForm from './components/movies/MovieForm';
 
 function App() {
 	return (
@@ -36,6 +37,11 @@ function App() {
 								element={<ShowMoviesGenre />}
 							/>
 							<Route path='/genres' element={<Genres />} />
+							<Route
+								exact
+								path='/admin/movies/create'
+								element={<MovieForm />}
+							/>
 							<Route path='/admin' element={<Admin />} />
 						</Routes>
 					</div>
