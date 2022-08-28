@@ -116,5 +116,24 @@ func (app *application) addMovie(rw http.ResponseWriter, r *http.Request) {
 	movie.UpdatedAt = time.Now()
 
 	// insert movie query
+	err = app.models.DB.InsertMovie(movie)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(rw, err)
+		return
+	}
 
+	type jsonRes struct {
+		OK bool `json:"ok"`
+	}
+
+	ok := jsonRes{
+		OK: true,
+	}
+
+	err = app.writeJSON(rw, http.StatusOK, ok, "response")
+	if err != nil {
+		app.errorJSON(rw, err)
+		return
+	}
 }
