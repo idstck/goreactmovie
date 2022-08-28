@@ -42,6 +42,11 @@ function App() {
 								path='/admin/movies/create'
 								element={<MovieForm />}
 							/>
+							<Route
+								exact
+								path='/admin/movies/:id/edit'
+								element={<MovieForm />}
+							/>
 							<Route path='/admin' element={<Admin />} />
 						</Routes>
 					</div>

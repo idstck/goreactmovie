@@ -80,7 +80,11 @@ const MovieTable = () => {
 													</button>
 													<ul className='dropdown-menu'>
 														<li>
-															<span className='dropdown-item'>Edit</span>
+															<span className='dropdown-item'>
+																<Link to={`/admin/movies/${movie.id}/edit`}>
+																	Edit
+																</Link>
+															</span>
 														</li>
 														<li>
 															<span className='dropdown-item'>Delete</span>

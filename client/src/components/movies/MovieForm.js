@@ -1,9 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const MovieForm = () => {
+	const { id } = useParams();
 	const { register, handleSubmit, setValue } = useForm();
+	const isAddMode = !id;
+	const fields = [
+		'id',
+		'title',
+		'description',
+		'runtime',
+		'release_date',
+		'runtime',
+		'rating',
+		'mpaa_rating',
+		'genres',
+	];
+
+	const fetchMovie = async (id) => {
+		try {
+			const result = await axios(`http://localhost:4000/movies/${id}`);
+			result.data.movie.release_date = new Date(result.data.movie.release_date)
+				.toISOString()
+				.split('T')[0];
+			fields.forEach((field) => setValue(field, result.data.movie[field]));
+		} catch (err) {
+			console.log(err.response.data);
+		}
+	};
+
+	useEffect(() => {
+		if (!isAddMode) {
+			fetchMovie(id);
+		}
+	}, [isAddMode]);
+
 	const onSubmit = async (data) => {
 		const result = await axios.post(
 			'http://localhost:4000/admin/movies/add',
