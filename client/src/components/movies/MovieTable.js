@@ -8,6 +8,16 @@ const MovieTable = () => {
 	const [loaded, setLoaded] = useState(false);
 	const [errorMessage, setErrorMessage] = useState(null);
 
+	const confirmDelete = async (id) => {
+		const payload = {
+			id: id.toString(),
+		};
+		await axios.post(
+			'http://localhost:4000/admin/movies/delete',
+			JSON.stringify(payload)
+		);
+	};
+
 	useEffect(() => {
 		const fetchMovies = async () => {
 			try {
@@ -87,7 +97,13 @@ const MovieTable = () => {
 															</span>
 														</li>
 														<li>
-															<span className='dropdown-item'>Delete</span>
+															<span
+																className='dropdown-item'
+																style={{ cursor: 'pointer' }}
+																onClick={() => confirmDelete(movie.id)}
+															>
+																Delete
+															</span>
 														</li>
 													</ul>
 												</div>
