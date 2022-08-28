@@ -137,3 +137,51 @@ func (app *application) addMovie(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (app *application) editMovie(rw http.ResponseWriter, r *http.Request) {
+	var payload MoviePayload
+	err := json.NewDecoder(r.Body).Decode(&payload)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(rw, err)
+		return
+	}
+
+	var movie models.Movie
+
+	id, _ := strconv.Atoi(payload.ID)
+	singleMovie, _ := app.models.DB.Get(id)
+	movie = *singleMovie
+
+	movie.ID, _ = strconv.Atoi(payload.ID)
+	movie.Title = payload.Title
+	movie.Description = payload.Description
+	movie.ReleaseDate, _ = time.Parse("2006-01-02", payload.ReleaseDate)
+	movie.Year = movie.ReleaseDate.Year()
+	movie.Runtime, _ = strconv.Atoi(payload.Runtime)
+	movie.Rating, _ = strconv.Atoi(payload.Rating)
+	movie.MPAARating = payload.MPAARating
+	movie.UpdatedAt = time.Now()
+
+	// update movie query
+	err = app.models.DB.UpdateMovie(movie)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(rw, err)
+		return
+	}
+
+	type jsonRes struct {
+		OK bool `json:"ok"`
+	}
+
+	ok := jsonRes{
+		OK: true,
+	}
+
+	err = app.writeJSON(rw, http.StatusOK, ok, "response")
+	if err != nil {
+		app.errorJSON(rw, err)
+		return
+	}
+}
