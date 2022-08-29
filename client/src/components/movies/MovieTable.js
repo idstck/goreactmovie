@@ -1,6 +1,6 @@
 /* third party */
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const MovieTable = () => {
@@ -16,23 +16,36 @@ const MovieTable = () => {
 			'http://localhost:4000/admin/movies/delete',
 			JSON.stringify(payload)
 		);
+		fetchMovies();
+	};
+
+	const fetchMovies = async () => {
+		try {
+			const result = await axios(`http://localhost:4000/movies`);
+			if (result.data.movies !== null) {
+				await setMovies(result.data.movies);
+				setLoaded(true);
+			} else {
+				setErrorMessage('nothing data to load');
+			}
+		} catch (err) {
+			setErrorMessage(err.response.data);
+		}
 	};
 
 	useEffect(() => {
-		const fetchMovies = async () => {
-			try {
-				const result = await axios(`http://localhost:4000/movies`);
-				await setMovies(result.data.movies);
-				setLoaded(true);
-			} catch (err) {
-				setErrorMessage(err.response.data);
-			}
-		};
 		fetchMovies();
 	}, []);
 
 	return (
 		<>
+			<div className='row'>
+				<div className='col-12'>
+					<Link to={'/admin/movies/create'} className='btn btn-sm btn-primary'>
+						Add
+					</Link>
+				</div>
+			</div>
 			{!loaded ? (
 				(() => {
 					if (errorMessage) {
@@ -51,16 +64,6 @@ const MovieTable = () => {
 				})()
 			) : (
 				<>
-					<div className='row'>
-						<div className='col-12'>
-							<Link
-								to={'/admin/movies/create'}
-								className='btn btn-sm btn-primary'
-							>
-								Add
-							</Link>
-						</div>
-					</div>
 					<div className='row'>
 						<div className='col-12'>
 							<table className='table'>
@@ -100,7 +103,11 @@ const MovieTable = () => {
 															<span
 																className='dropdown-item'
 																style={{ cursor: 'pointer' }}
-																onClick={() => confirmDelete(movie.id)}
+																onClick={() => {
+																	if (window.confirm('Are you sure?')) {
+																		confirmDelete(movie.id);
+																	}
+																}}
 															>
 																Delete
 															</span>
