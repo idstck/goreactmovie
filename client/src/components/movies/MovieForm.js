@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const MovieForm = () => {
+	const navigate = useNavigate();
 	const { id } = useParams();
 	const { register, handleSubmit, setValue } = useForm();
 	const isAddMode = !id;
@@ -22,7 +23,6 @@ const MovieForm = () => {
 	const fetchMovie = async (id) => {
 		try {
 			const result = await axios(`http://localhost:4000/movies/${id}`);
-			result.data.movie.id = result.data.movie.id.toString();
 			result.data.movie.release_date = new Date(result.data.movie.release_date)
 				.toISOString()
 				.split('T')[0];
@@ -39,19 +39,25 @@ const MovieForm = () => {
 	}, [isAddMode]);
 
 	const onSubmit = async (data) => {
+		let dataJSON = JSON.stringify(data, (k, v) =>
+			v && typeof v === 'object' ? v : '' + v
+		);
+		let payload = JSON.parse(dataJSON);
 		if (isAddMode) {
 			const result = await axios.post(
 				'http://localhost:4000/admin/movies/add',
-				JSON.stringify(data)
+				JSON.stringify(payload)
 			);
 			console.log(result.data);
 		} else {
 			const result = await axios.post(
 				'http://localhost:4000/admin/movies/edit',
-				JSON.stringify(data)
+				JSON.stringify(payload)
 			);
 			console.log(result.data);
 		}
+		// resetForm();
+		navigate('/admin');
 	};
 	return (
 		<>
